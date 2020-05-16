@@ -1,0 +1,49 @@
+type Query {
+  user(id: ID!): User!
+  users: [User!]!
+}
+
+type Mutation {
+  signUp(data: SignUpInput!): SignUpPayload
+  signIn(data: SignInInput!): SignInPayload
+  signedUser(data: SignedUserInput!): SignedUserPayload
+}
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  createdAt: String
+  updatedAt: String
+  snaps: [Snap!]!
+}
+
+# Payloads
+type SignUpPayload {
+  username: String!
+  email: String!
+  createdAt: String
+  updatedAt: String
+  is_active: Boolean!
+}
+type SignInPayload {
+  user: JSON!
+  token: String!
+}
+type SignedUserPayload {
+  user: JSON!
+}
+
+# Inputs
+input SignUpInput {
+  username: String!
+  email: String!
+  password: String!
+}
+input SignInInput {
+  username: String!
+  password: String!
+}
+input SignedUserInput {
+  token: String!
+}

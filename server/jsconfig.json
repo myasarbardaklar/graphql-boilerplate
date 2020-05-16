@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@pxl/*": ["./*"],
+      "@pxl/models/*": ["./app/models/*"],
+      "@pxl/validators/*": ["./app/validators/*"],
+      "@pxl/controllers/*": ["./app/controllers/*"],
+      "@pxl/routes/*": ["./app/routes/*"],
+      "@pxl/middleware/*": ["./app/middleware/*"],
+      "@pxl/cron/*": ["./app/cron/*"],
+      "@pxl/graphql/*": ["app/graphql/*"],
+      "@pxl/graphql/resolvers/*": ["app/graphql/resolvers/*"],
+      "@pxl/graphql/types/*": ["app/graphql/types/*"],
+      "@pxl/helpers/*": ["./helpers/*"],
+      "@pxl/start/*": ["./start/*"],
+      "@pxl/providers/*": ["./start/providers/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
