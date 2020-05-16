@@ -1,0 +1,19 @@
+mutation signUp($email: String!, $username: String!, $password: String!) {
+  signUp(data: { email: $email, username: $username, password: $password }) {
+    username
+    email
+  }
+}
+
+mutation signIn($username: String!, $password: String!) {
+  signIn(data: { username: $username, password: $password }) {
+    user
+    token
+  }
+}
+
+mutation signedUser($token: String!) {
+  signedUser(data: { token: $token }) {
+    user
+  }
+}

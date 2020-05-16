@@ -1,0 +1,36 @@
+{
+  "name": "graphql-boilerplate",
+  "version": "1.0.0",
+  "description": "My fabulous Nuxt.js project",
+  "author": "Muhammed Yaşar Bardaklar",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/apollo": "^4.0.0-rc19",
+    "@nuxtjs/dotenv": "^1.4.0",
+    "@nuxtjs/pwa": "^3.0.0-0",
+    "apollo-link-error": "^1.1.13",
+    "cookie-universal-nuxt": "^2.1.3",
+    "dotenv-expand": "^5.1.0",
+    "graphql-tag": "^2.10.3",
+    "nuxt": "^2.0.0",
+    "vee-validate": "^3.3.0",
+    "vue-notification": "^1.3.20",
+    "vuelidate": "^0.7.5"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^1.0.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "node-sass": "^4.14.0",
+    "prettier": "^1.19.1",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^8.0.2"
+  }
+}

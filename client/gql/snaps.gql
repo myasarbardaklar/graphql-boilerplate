@@ -1,0 +1,15 @@
+query {
+  snaps {
+    id
+    text
+    createdAt
+    updatedAt
+    user {
+      id
+      username
+      email
+      createdAt
+      updatedAt
+    }
+  }
+}
