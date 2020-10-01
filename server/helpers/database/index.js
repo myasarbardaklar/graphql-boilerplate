@@ -3,10 +3,10 @@
 const consola = require('consola')
 const mongodb = require('./database.mongodb')
 
-module.exports = (database) => {
+module.exports = async (database) => {
   switch (database) {
     case 'mongodb':
-      return mongodb
+      return await mongodb()
       break
 
     default:

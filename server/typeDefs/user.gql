@@ -1,0 +1,41 @@
+type Query {
+  user(id: ID!): User!
+  users: [User!]!
+}
+
+type Mutation {
+  signUp(data: signup_input!): User
+  signIn(data: signin_input!): SignInPayload
+  signedUser(data: signeduser_input!): User
+}
+
+type User {
+  id: ID!
+  fullname: String!
+  username: String!
+  email: String!
+  verified: Boolean!
+  verification_token: String!
+  avatar: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type SignInPayload {
+  user: User!
+  token: String!
+}
+
+# Inputs
+input signup_input {
+  username: String!
+  email: String!
+  password: String!
+}
+input signin_input {
+  username: String!
+  password: String!
+}
+input signeduser_input {
+  token: String!
+}

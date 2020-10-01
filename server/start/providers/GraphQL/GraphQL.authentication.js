@@ -3,7 +3,7 @@
 const _ = require('lodash')
 const jwt = require('jsonwebtoken')
 
-const UserModel = require('@pxl/models/User')
+const UserModel = require('@pxl/models/user.model')
 
 module.exports = async ({ req }) => {
   req.user = {

@@ -1,12 +1,10 @@
 'use strict'
 
-const fs = require('fs')
 const path = require('path')
+const fs = require('fs')
 const _ = require('lodash')
-const { ApolloServer } = require('apollo-server-express')
+const { ApolloServer, makeExecutableSchema } = require('apollo-server-express')
 const { importSchema } = require('graphql-import')
-const GraphQLJSON = require('graphql-type-json')
-
 const Authentication = require('./GraphQL.authentication')
 
 class GraphQLProvider {
@@ -20,16 +18,15 @@ class GraphQLProvider {
     // Include resolvers
     this.includeResolvers()
 
-    // Pass the schema path
-    const schemaPath = path.join(process.cwd(), 'app/graphql/types/schema.gql')
+    // Schema
+    const schema = makeExecutableSchema({
+      typeDefs: importSchema(path.join(process.cwd(), 'typeDefs/schema.gql')),
+      resolvers: this.resolvers
+    })
 
     // Initialize the Apollo Server
     this.server = new ApolloServer({
-      typeDefs: importSchema(schemaPath),
-      resolvers: {
-        JSON: GraphQLJSON,
-        ...this.resolvers
-      },
+      schema,
       context: async (ctx) => {
         await Authentication(ctx)
         return ctx
@@ -38,32 +35,28 @@ class GraphQLProvider {
   }
 
   includeResolvers() {
-    const resolversPath = path.join(process.cwd(), 'app/graphql/resolvers')
-    fs.readdirSync(resolversPath).forEach((resolverFolder) => {
-      let currentPath = path.join(resolversPath, resolverFolder)
-      fs.readdirSync(currentPath).forEach((resolver) => {
-        this.resolverExport(resolver, resolverFolder)
-      })
+    const resolversPath = path.join(process.cwd(), 'resolvers')
+    fs.readdirSync(resolversPath).forEach((resolver) => {
+      this.resolverExport(resolver)
     })
   }
 
-  resolverExport(resolver, folderName) {
+  resolverExport(resolver) {
     let resolverSplit = _.split(resolver, '.')
-    let resolverFile = require(`@pxl/graphql/resolvers/${folderName}/${resolver}`)
+    let resolverFile = require(`@pxl/resolvers/${resolver}`)
 
-    if (resolverSplit[0] === 'index') {
-      let _folderName = _.capitalize(folderName)
+    switch (resolverSplit[1]) {
+      case 'query':
+        _.assign(this.resolvers.Query, resolverFile)
+        break
 
-      if (this.resolvers[`${_folderName}`]) {
-        _.assign(this.resolvers[`${_folderName}`], resolverFile)
-      } else {
-        this.resolvers[`${_folderName}`] = { ...resolverFile }
-      }
-    } else {
-      _.assign(
-        this.resolvers[`${_.capitalize(resolverSplit[1])}`],
-        resolverFile
-      )
+      case 'mutation':
+        _.assign(this.resolvers.Mutation, resolverFile)
+        break
+
+      default:
+        _.assign(this.resolvers, resolverFile)
+        break
     }
   }
 }

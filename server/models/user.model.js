@@ -7,6 +7,10 @@ const jwt = require('jsonwebtoken')
 // Schema
 const UserSchema = mongoose.Schema(
   {
+    fullname: {
+      type: String,
+      required: true
+    },
     username: {
       type: String,
       required: true,
@@ -20,18 +24,13 @@ const UserSchema = mongoose.Schema(
       index: true
     },
     password: { type: String, required: true },
-    is_active: {
+    verified: {
       type: Boolean,
       required: true,
       default: false
     },
-    token: String,
-    role: {
-      type: String,
-      required: true,
-      default: 'user'
-    },
-    photo: {
+    verification_token: String,
+    avatar: {
       type: String,
       default: '/images/default-user.png'
     }
@@ -61,7 +60,7 @@ UserSchema.pre('save', async function(next) {
 UserSchema.pre('save', async function(next) {
   const User = this
 
-  if (this.isModified('token') || this.isNew) {
+  if (this.isModified('verification_token') || this.isNew) {
     try {
       const payload = {
         email: User.email,
@@ -71,7 +70,7 @@ UserSchema.pre('save', async function(next) {
       const token = await jwt.sign(payload, process.env.APP_KEY, {
         expiresIn: '2h'
       })
-      User.token = token
+      User.verification_token = token
 
       return next()
     } catch (error) {

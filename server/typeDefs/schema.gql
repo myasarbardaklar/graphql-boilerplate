@@ -1,0 +1,12 @@
+scalar Array
+scalar Date
+scalar Object
+
+# import Query from 'user.gql'
+# import Mutation from 'user.gql'
+
+# import Query from 'tweet.gql'
+# import Mutation from 'tweet.gql'
+
+# import Query from 'hashtag.gql'
+# import Mutation from 'hashtag.gql'

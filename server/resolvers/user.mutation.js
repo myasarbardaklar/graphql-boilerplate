@@ -3,8 +3,7 @@
 const { ApolloError } = require('apollo-server')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
-const UserModel = require('@pxl/models/User')
+const UserModel = require('@pxl/models/user.model')
 
 module.exports = {
   // Sign up mutation
@@ -78,7 +77,7 @@ module.exports = {
         )
       }
 
-      if (!doc.is_active) {
+      if (!doc.isActive) {
         throw new ApolloError(
           'Please approve your membership and try again.',
           'MembershipProblem',
@@ -92,8 +91,7 @@ module.exports = {
       const payload = {
         id: doc.id,
         username: doc.username,
-        email: doc.email,
-        role: doc.role
+        email: doc.email
       }
       const token = await jwt.sign(payload, process.env.APP_KEY)
 
@@ -102,8 +100,7 @@ module.exports = {
           id: doc.id,
           username: doc.username,
           email: doc.email,
-          role: doc.role,
-          photo: doc.photo
+          avatar: doc.avatar
         },
         token
       }
@@ -117,7 +114,7 @@ module.exports = {
     try {
       const verifyToken = await jwt.verify(args.data.token, process.env.APP_KEY)
       const user = await UserModel.findById(verifyToken.id).select(
-        'id email username photo role createdAt updatedAt'
+        'id email username avatar isActive confirmationToken createdAt updatedAt'
       )
 
       if (!user) {

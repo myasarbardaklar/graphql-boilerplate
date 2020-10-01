@@ -3,6 +3,9 @@
 module.exports = {
   mode: 'graphql',
 
+  host: process.env.HOST || 'localhost',
+  port: process.env.PORT || 4747,
+
   /*
    * Set the database informations
    * Available database connections: ['mongodb', 'postgres']

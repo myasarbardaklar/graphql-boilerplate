@@ -1,0 +1,24 @@
+type Query {
+  get_tweet(id: ID!): Tweet
+  get_tweets: [Tweet!]!
+}
+
+type Mutation {
+  create_tweet(data: create_tweet_input!): Tweet
+}
+
+type Tweet {
+  id: ID!
+  innerText: String!
+  user: User!
+  hashtags: [Hashtag!]!
+  favorites: [ID!]!
+  replies: [ID!]!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input create_tweet_input {
+  innerText: String!
+  userId: ID!
+}

@@ -1,0 +1,18 @@
+type Query {
+  get_hashtag(id: ID!): Hashtag
+  get_hashtags: [Hashtag!]!
+}
+
+type Mutation {
+  create_hashtag(data: create_hashtag_input): Hashtag
+}
+
+type Hashtag {
+  id: ID!
+  title: String!
+  count: Int!
+}
+
+input create_hashtag_input {
+  title: String!
+}

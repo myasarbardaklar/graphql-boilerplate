@@ -1,7 +1,7 @@
 'use strict'
 
-const consola = require('consola')
 const mongoose = require('mongoose')
+const consola = require('consola')
 
 mongoose.Promise = Promise
 mongoose.connection.on('connected', () => {
@@ -32,12 +32,14 @@ mongoose.connection.on('error', (error) => {
   console.error(error)
 })
 
-module.exports = mongoose.connect(
-  `mongodb://${pxl.config.database.connect.user}:${pxl.config.database.connect.password}@${pxl.config.database.connect.host}:${pxl.config.database.connect.port}/${pxl.config.database.connect.database}`,
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  }
-)
+module.exports = async () => {
+  await mongoose.connect(
+    `mongodb://${PXL.config.database.connect.user}:${PXL.config.database.connect.password}@${PXL.config.database.connect.host}:${PXL.config.database.connect.port}/${PXL.config.database.connect.database}`,
+    {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    }
+  )
+}

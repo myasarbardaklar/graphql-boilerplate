@@ -6,47 +6,41 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
 const consola = require('consola')
+const database = require('@pxl/helpers/database')
 
-class Server {
-  constructor() {
-    this.app = express()
-    this.host = process.env.HOST || 'localhost'
-    this.port = process.env.PORT || 4747
+const app = express()
 
-    this.middleware()
-    this.assets()
-    this.graphqlprovider()
-    this.listen()
-  }
+// Initialize middleware
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(cors())
 
-  // Initialize middlewares
-  middleware() {
-    this.app.use(logger('dev'))
-    this.app.use(express.json())
-    this.app.use(express.urlencoded({ extended: false }))
-    this.app.use(cookieParser())
-    this.app.use(cors())
-  }
+// Set the static paths
+app.use(express.static(path.join(process.cwd(), 'static')))
 
-  // Set the static paths
-  assets() {
-    this.app.use(express.static(path.join(process.cwd(), 'static')))
-  }
+// Initial the Apollo server
+const GraphQLServer = require('@pxl/providers/GraphQL')
+GraphQLServer.server.applyMiddleware({ app })
 
-  graphqlprovider() {
-    const graphql = require('@pxl/providers/GraphQL')
-    graphql.server.applyMiddleware({ app: this.app })
-  }
+// Start the server
+module.exports = async () => {
+  try {
+    // Initial the database
+    await database(PXL.config.database.connection)
 
-  // Listen the server
-  listen() {
-    this.app.listen(this.port, this.host)
-
-    consola.ready({
-      message: `GraphQL server listening on \`http://${this.host}:${this.port}/graphql\``,
+    // Listen the server
+    await app.listen(PXL.config.port, PXL.config.host, () => {
+      consola.ready({
+        message: `GraphQL server listening on \`http://${PXL.config.host}:${PXL.config.port}/graphql\``,
+        badge: true
+      })
+    })
+  } catch (error) {
+    consola.error({
+      message: `Unable to start the server \n${error.message}`,
       badge: true
     })
   }
 }
-
-module.exports = new Server()
