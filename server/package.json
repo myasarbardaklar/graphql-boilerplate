@@ -26,7 +26,7 @@
     "lint": "eslint --ext .js --ignore-path .gitignore ."
   },
   "dependencies": {
-    "apollo-server": "^2.15.0",
+    "apollo-server": "^2.25.4",
     "apollo-server-express": "^2.12.0",
     "bcryptjs": "^2.4.3",
     "consola": "^2.11.3",
